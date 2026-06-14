@@ -1,65 +1,128 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { Wrench, ShieldCheck, Truck, MessageCircle, ChevronLeft } from 'lucide-react';
+import Image from 'next/image';
+import { supabase } from '@/lib/supabase';
 
-export default function Home() {
+export const revalidate = 60;
+
+const settings = {
+  heroTitle: "غرف نوم وطني من المصنع مباشرة",
+  heroSubtitle: "توصيل مجاني في الرياض | الدفع عند الاستلام | ضمان مصنعي على جميع منتجاتنا.",
+  heroImage: "https://images.unsplash.com/photo-1640109478916-f445f8f19b11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+  featuredCount: 6,
+  showFeatures: true
+};
+
+export default async function Home() {
+  const { data: featuredProducts } = await supabase
+    .from('products')
+    .select('*, images:product_images(*)')
+    .limit(settings.featuredCount)
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <section className="relative h-[80vh] min-h-[500px] flex items-center">
+        <div className="absolute inset-0 z-0">
+          <Image src={settings.heroImage} alt="Luxury Bedroom" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-l from-blue-950/80 to-blue-950/40" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="max-w-2xl text-white">
+            <span className="inline-block py-1 px-3 rounded-full bg-amber-500/20 text-amber-400 font-medium text-sm mb-4 border border-amber-500/30">
+              أثاث فاخر بجودة عالية
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
+              {settings.heroTitle} <br />
+              <span className="text-amber-500">مع تركيب مجاني</span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg leading-relaxed">
+              {settings.heroSubtitle}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href="#products" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg font-bold text-lg text-center transition-all shadow-lg shadow-amber-600/30">
+                تصفح التشكيلة
+              </a>
+              <a href="https://wa.me/966539404559?text=مرحباً مؤسسة رؤية، أريد الاستفسار عن منتجاتكم" target="_blank" rel="noopener noreferrer"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-lg font-bold text-lg text-center transition-all flex items-center justify-center gap-2">
+                <MessageCircle size={20} />
+                <span>تواصل معنا</span>
+              </a>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {settings.showFeatures && (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x-reverse md:divide-x divide-gray-100">
+              <div className="p-6 flex flex-col items-center">
+                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 text-blue-950"><ShieldCheck size={32} /></div>
+                <h3 className="text-xl font-bold text-blue-950 mb-2">خشب تايلندي عالي الجودة</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">نستخدم أفضل أنواع الخشب المقاوم للرطوبة والخدش لضمان استدامة الأثاث لسنوات طويلة.</p>
+              </div>
+              <div className="p-6 flex flex-col items-center">
+                <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-4 text-amber-600"><Wrench size={32} /></div>
+                <h3 className="text-xl font-bold text-blue-950 mb-2">تصاميم مخصصة</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">نقدم خدمة التفصيل حسب الطلب والمقاسات التي تناسب مساحتك بكل دقة واحترافية.</p>
+              </div>
+              <div className="p-6 flex flex-col items-center">
+                <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-4 text-emerald-600"><Truck size={32} /></div>
+                <h3 className="text-xl font-bold text-blue-950 mb-2">توصيل وتركيب مجاني</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">خدمة التوصيل والتركيب مجانية بالكامل داخل مدينة الرياض بأيدي فنيين متخصصين.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section id="products" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-950 mb-4">تشكيلتنا المميزة</h2>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full mb-4"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">اختر من بين مجموعتنا الواسعة من غرف النوم العصرية والكلاسيكية التي تناسب ذوقك وتلبي احتياجاتك.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {!featuredProducts?.length ? (
+              <div className="col-span-full text-center text-gray-500 py-10">لا توجد منتجات مضافة حالياً.</div>
+            ) : (
+              featuredProducts.map((product) => (
+                <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 group border border-gray-100 flex flex-col">
+                  <div className="relative h-64 overflow-hidden shrink-0">
+                    <Image src={product.images?.[0]?.image_url || '/placeholder.jpg'} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-blue-950 font-bold px-3 py-1.5 rounded-lg text-sm">
+                      {product.price.toLocaleString()} ر.س
+                    </div>
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="text-xl font-bold text-slate-800 mb-4 line-clamp-1">{product.name}</h3>
+                    <div className="flex items-center gap-3 text-sm text-gray-500 mb-6 mt-auto">
+                      <span className="flex items-center gap-1"><ShieldCheck size={16} className="text-amber-500" />ضمان مصنعي</span>
+                      <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <span className="flex items-center gap-1"><Wrench size={16} className="text-amber-500" /> تركيب مجاني</span>
+                    </div>
+                    <Link href={`/product/${product.id}`} className="w-full bg-blue-950 hover:bg-blue-900 text-white rounded-xl py-3 px-4 flex items-center justify-center gap-2 font-bold transition-colors shadow-md shadow-blue-950/20">
+                      <span>عرض التفاصيل</span>
+                      <ChevronLeft size={20} />
+                    </Link>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="mt-16 text-center">
+            <a href="https://wa.me/966539404559?text=مرحباً، أبحث عن تصميم مخصص لغرفة نوم" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-950 font-bold hover:text-amber-600 transition-colors text-lg group">
+              <span>هل تبحث عن تصميم مخصص؟ تواصل معنا</span>
+              <ChevronLeft className="group-hover:-translate-x-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
