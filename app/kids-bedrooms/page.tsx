@@ -3,7 +3,14 @@ import { ChevronLeft, ShieldCheck, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
+import { Metadata } from 'next';
+
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "غرف نوم أطفال | مؤسسة رؤية للأثاث",
+  description: "أحدث تصاميم غرف نوم أطفال مبهجة وعملية بألوان رائعة وجودة ممتازة من مؤسسة رؤية للأثاث بالرياض. أسعار تنافسية من المصنع مباشرة مع تركيب مجاني.",
+};
 
 export default async function KidsBedrooms() {
     const { data: products } = await supabase

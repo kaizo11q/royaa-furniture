@@ -3,7 +3,14 @@ import { ChevronLeft, ShieldCheck, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
+import { Metadata } from 'next';
+
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "كنب جاهز وتفصيل | مؤسسة رؤية للأثاث",
+  description: "أرقى موديلات الكنب الجاهز والتفصيل حسب الطلب بمقاسات وألوان مخصصة من مؤسسة رؤية للأثاث بالرياض. أقمشة فاخرة وإسفنج مريح عالي الجودة مع توصيل مجاني.",
+};
 
 export default async function Sofas() {
     const { data: products } = await supabase

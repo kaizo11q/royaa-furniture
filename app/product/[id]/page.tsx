@@ -2,8 +2,55 @@ import Link from 'next/link';
 import { ShieldCheck, Wrench, Truck, ArrowRight, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { Metadata } from 'next';
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    const resolvedParams = await params;
+    const { data: product } = await supabase
+        .from('products')
+        .select('*, images:product_images(*), category:categories(name)')
+        .eq('id', resolvedParams.id)
+        .single();
+
+    if (!product) {
+        return {
+            title: 'المنتج غير موجود | مؤسسة رؤية للأثاث',
+            description: 'عذراً، هذا المنتج غير متوفر حالياً في مؤسسة رؤية للأثاث.',
+        };
+    }
+
+    const title = `${product.name} | مؤسسة رؤية للأثاث`;
+    const description = product.description 
+        ? (product.description.length > 150 ? product.description.substring(0, 150) + '...' : product.description)
+        : `شراء وتفصيل ${product.name} بجودة عالية وضمان مصنعي مع تركيب وتوصيل مجاني بالرياض.`;
+    const imageUrl = product.images?.[0]?.image_url || '/logo.png';
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 800,
+                    height: 600,
+                    alt: product.name,
+                },
+            ],
+            type: 'website',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [imageUrl],
+        },
+    };
+}
 
 export default async function ProductDetails({ params }: { params: { id: string } }) {
     // In Next.js 15+, params is a promise and must be awaited

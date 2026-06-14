@@ -3,7 +3,14 @@ import { ChevronLeft, ShieldCheck, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
+import { Metadata } from 'next';
+
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "غرف نوم نفرين (زوجي) | مؤسسة رؤية للأثاث",
+  description: "اكتشف الفخامة مع تشكيلة غرف نوم نفرين (ماستر) من مؤسسة رؤية للأثاث بالرياض. تفصيل وتصميم على أعلى مستوى بأسعار المصنع مع تركيب مجاني.",
+};
 
 export default async function DoubleBedrooms() {
     const { data: products } = await supabase

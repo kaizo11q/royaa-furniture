@@ -8,7 +8,7 @@ export const revalidate = 60;
 const settings = {
   heroTitle: "غرف نوم وطني من المصنع مباشرة",
   heroSubtitle: "توصيل مجاني في الرياض | الدفع عند الاستلام | ضمان مصنعي على جميع منتجاتنا.",
-  heroImage: "https://images.unsplash.com/photo-1640109478916-f445f8f19b11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+  heroImage: "/bj.jpeg",
   featuredCount: 6,
   showFeatures: true
 };

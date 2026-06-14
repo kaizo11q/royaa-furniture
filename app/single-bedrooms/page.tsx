@@ -3,7 +3,14 @@ import { ChevronLeft, ShieldCheck, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
+import { Metadata } from 'next';
+
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "غرف نوم نفر | مؤسسة رؤية للأثاث",
+  description: "تشكيلة رائعة من غرف نوم مفرد (نفر) بتصاميم عصرية وكلاسيكية وخامات عالية الجودة من المصنع مباشرة بالرياض مع توصيل وتركيب مجاني.",
+};
 
 export default async function SingleBedrooms() {
     const { data: products } = await supabase
